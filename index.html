@@ -3,34 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تێک نێت | جیهانی تەکنەلۆجیا و فێربوون</title>
+    <title>تێک نێت مۆدێرن</title>
     <style>
-        /* ڕێکخستنی گشتی */
+        /* گۆڕاوەکانی ڕەنگ بۆ ڕووناک و تاریک */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #06b6d4;
+            --border: #334155;
+        }
+
+        .light-theme {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
+            --primary: #0284c7;
+            --border: #e2e8f0;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background 0.3s, color 0.3s;
         }
 
         body {
-            background-color: #0f172a;
-            color: #f8fafc;
-            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
 
-        /* بەشی سەرەوە (Header) */
+        /* بەشی سەرەوە */
         header {
-            background-color: #1e293b;
-            padding: 20px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .nav-container {
-            max-width: 1200px;
+        .navbar {
+            max-width: 1000px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -38,213 +56,138 @@
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
-            color: #38bdf8;
-            text-decoration: none;
+            color: var(--primary);
         }
 
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #38bdf8;
-        }
-
-        /* بەشی بەخێرهاتن (Hero Section) */
-        .hero {
-            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
-            padding: 80px 20px;
-            text-align: center;
-            border-bottom: 1px solid #334155;
-        }
-
-        .hero h1 {
-            font-size: 40px;
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: #94a3b8;
-            max-width: 600px;
-            margin: 0 auto 30px auto;
-        }
-
-        .btn-explore {
-            background-color: #2563eb;
+        /* دوگمەی گۆڕینی ڕەنگ */
+        .theme-btn {
+            background: var(--primary);
             color: white;
-            padding: 12px 24px;
             border: none;
-            border-radius: 6px;
-            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 20px;
             cursor: pointer;
+            font-size: 14px;
             font-weight: bold;
-            transition: background 0.3s;
         }
 
-        .btn-explore:hover {
-            background-color: #1d4ed8;
-        }
-
-        /* بەشی بابەتەکان (Main Content) */
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
+        /* سێکشنەکان */
+        .main-container {
+            max-width: 1000px;
+            margin: 30px auto;
             padding: 0 20px;
         }
 
-        .section-title {
-            font-size: 28px;
-            margin-bottom: 30px;
-            border-right: 5px solid #38bdf8;
-            padding-right: 15px;
+        .welcome-box {
+            background: linear-gradient(135deg, #1e1b4b, #311042);
+            padding: 40px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .card {
-            background-color: #1e293b;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
-            border: 1px solid #334155;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-content {
-            padding: 20px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .badge-cyber { background-color: #ef4444; color: white; }
-        .badge-prog { background-color: #10b981; color: white; }
-        .badge-tech { background-color: #3b82f6; color: white; }
-
-        .card h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #f1f5f9;
-        }
-
-        .card p {
-            color: #94a3b8;
-            font-size: 14px;
+        .welcome-box h1 {
+            font-size: 32px;
             margin-bottom: 15px;
         }
 
-        .card-btn {
-            color: #38bdf8;
+        /* لیستکردنی بابەتەکان لەسەر مۆبایل و کۆمپیوتەر */
+        .content-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .post-meta {
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .post-card h2 {
+            font-size: 20px;
+        }
+
+        .post-card p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .read-more {
+            align-self: flex-start;
+            color: var(--primary);
             text-decoration: none;
             font-weight: bold;
             font-size: 14px;
         }
 
-        /* فوتەر (Footer) */
         footer {
-            background-color: #0f172a;
             text-align: center;
-            padding: 20px;
-            color: #64748b;
-            border-top: 1px solid #334155;
-            margin-top: 60px;
+            padding: 30px;
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
 
-    <!-- بەشی سەرەوە -->
     <header>
-        <nav class="nav-container">
-            <a href="#" class="logo">تێک نێت</a>
-            <ul class="nav-links">
-                <li><a href="#">سەرەکی</a></li>
-                <li><a href="#articles">بابەتەکان</a></li>
-                <li><a href="#">دەربارە</a></li>
-            </ul>
-        </nav>
+        <div class="navbar">
+            <div class="logo">تێک نێت 🌟</div>
+            <button class="theme-btn" onclick="toggleTheme()">گۆڕینی ڕەنگ</button>
+        </div>
     </header>
 
-    <!-- هێرۆ سێکشن -->
-    <section class="hero">
-        <h1>بەخێربێن بۆ جیهانی تەکنەلۆجیا</h1>
-        <p>نوێترین هەواڵەکانی تەکنەلۆجیا، فێربوونی پڕۆگرامسازی، و ڕێنماییەکانی پاراستنی زانیاری لێرە ببینه.</p>
-        <button class="btn-explore" onclick="welcomeAlert()">دەستپێبکە</button>
-    </section>
-
-    <!-- بەشی بابەتەکان -->
-    <main class="container" id="articles">
-        <h2 class="section-title">نوێترین بابەتەکان</h2>
+    <div class="main-container">
         
-        <div class="grid">
-            <!-- بابەتی ١ -->
-            <div class="card">
-                <div class="card-content">
-                    <span class="badge badge-cyber">پاراستن</span>
-                    <h3>چۆن داتاکانت دەپارێزیت؟</h3>
-                    <p>فێرببە چۆن لە جیهانی ئینتەرنێتدا خۆت و زانیارییەکانت لە هێرشە ئەلیکترۆنییەکان دەپارێزیت و سێرڤەرەکەت بەهێز دەکەیت.</p>
-                    <a href="#" class="card-btn">زیاتر بخوێنەوە ←</a>
-                </div>
-            </div>
-
-            <!-- بابەتی ٢ -->
-            <div class="card">
-                <div class="card-content">
-                    <span class="badge badge-prog">پڕۆگرامسازی</span>
-                    <h3>بۆچی زمانی Python فێرببین؟</h3>
-                    <p>پایثۆن یەکێکە لە بەهێزترین و ئاسانترین زمانەکان بۆ گەشەپێدانی سۆفتوێر، زیرەکی دەستکرد، و سکریپت نووسین.</p>
-                    <a href="#" class="card-btn">زیاتر بخوێنەوە ←</a>
-                </div>
-            </div>
-
-            <!-- بابەتی ٣ -->
-            <div class="card">
-                <div class="card-content">
-                    <span class="badge badge-tech">تەکنەلۆجیا</span>
-                    <h3>بزوێنەری Unreal Engine 5.5</h3>
-                    <p>سەیرێکی تایبەتمەندییە نوێیەکانی ئەم بزوێنەرە بکە بۆ دروستکردنی یارییە سێ ڕەهەندییە (3D) بەهێزەکان بە گرافیکێکی بەرز.</p>
-                    <a href="#" class="card-btn">زیاتر بخوێنەوە ←</a>
-                </div>
-            </div>
+        <div class="welcome-box">
+            <h1>بەخێربێن بۆ بلۆگی نوێ</h1>
+            <p>لێرە فێربوونی پڕۆگرامسازی و پاراستنی زانیاری بە شێوازێکی مۆدێرن ببینە.</p>
         </div>
-    </main>
 
-    <!-- فوتەر -->
+        <div class="content-grid">
+            
+            <div class="post-card">
+                <span class="post-meta">#پایثۆن #فێربوون</span>
+                <h2>چۆن یەکەم سکریپتی خۆت بە پۆتۆن دەنووسیت؟</h2>
+                <p>پایثۆن زمانێکی زۆر سادەیە. لێرەدا فێردەبین چۆن بە چەند دێڕێکی کەم ئەپڵیکەیشنێکی ناوخۆیی بۆ کۆمپیوتەرەکەت دروست بکەیت.</p>
+                <a href="#" class="read-more">خوێندنەوەی بابەت ←</a>
+            </div>
+
+            <div class="post-card">
+                <span class="post-meta">#سایبەر #پاراستن</span>
+                <h2>گرنگی بەهێزکردنی وشەی تێپەڕ (Password)</h2>
+                <p>پاراستنی ئەکاونتەکانت لە هێرشی هاکەران سەرەکیترین هەنگاوە. هەمیشە هەوڵبدە وشەی تێپەڕی ئاڵۆز بەکاربهێنیت کە پیت و ژمارە و هێمای تێدابێت.</p>
+                <a href="#" class="read-more">خوێندنەوەی بابەت ←</a>
+            </div>
+
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2026 تێک نێت. هەموو مافەکانی پارێزراوە.</p>
+        <p>&copy; 2026 تێک نێت مۆدێرن. هەموو مافەکان پارێزراون.</p>
     </footer>
 
-    <!-- جافاسکریپت -->
     <script>
-        function welcomeAlert() {
-            alert('بەخێربێیت بۆ سایتەکە! هیوادارم کاتێکی بەسوود بەسەر بەریت.');
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
         }
     </script>
 </body>
