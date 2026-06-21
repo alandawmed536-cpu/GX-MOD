@@ -1,194 +1,62 @@
-<!DOCTYPE html>
-<html lang="ku" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تێک نێت مۆدێرن</title>
-    <style>
-        /* گۆڕاوەکانی ڕەنگ بۆ ڕووناک و تاریک */
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-            --primary: #06b6d4;
-            --border: #334155;
-        }
+import json
+import os
+from datetime import datetime
+from typing import Dict, Any
 
-        .light-theme {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #0f172a;
-            --text-muted: #64748b;
-            --primary: #0284c7;
-            --border: #e2e8f0;
-        }
+class KurdChatMemory:
+    def __init__(self, memory_file="kurdchat_memory.json"):
+        self.memory_file = memory_file
+        self.memory = self._load_memory()
+    
+    def _load_memory(self) -> Dict:
+        """بارکردنی هەموو یادەوەرییەکان"""
+        if os.path.exists(self.memory_file):
+            with open(self.memory_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return {"users": {}, "conversations": {}}
+    
+    def save_memory(self):
+        """هەڵگرتنی یادەوەرییەکان"""
+        with open(self.memory_file, 'w', encoding='utf-8') as f:
+            json.dump(self.memory, f, ensure_ascii=False, indent=4)
+    
+    def register_user(self, user_id: str, name: str, preferences: Dict = None):
+        """تۆمارکردنی بەکارهێنەری نوێ"""
+        if user_id not in self.memory["users"]:
+            self.memory["users"][user_id] = {
+                "name": name,
+                "preferences": preferences or {},
+                "created_at": str(datetime.now()),
+                "conversation_history": []
+            }
+            self.save_memory()
+            return f"بەخێربێیت {name}! تۆمارکرایت لە KurdChat."
+        return f"بەخێربێیتەوە {self.memory['users'][user_id]['name']}!"
+    
+    def add_conversation(self, user_id: str, user_msg: str, bot_msg: str):
+        """زیادکردنی گفتوگۆی نوێ"""
+        if user_id in self.memory["users"]:
+            self.memory["users"][user_id]["conversation_history"].append({
+                "timestamp": str(datetime.now()),
+                "user": user_msg,
+                "bot": bot_msg
+            })
+            self.save_memory()
+    
+    def get_user_info(self, user_id: str) -> Dict:
+        """زانیاری بەکارهێنەر وەرگرتن"""
+        return self.memory["users"].get(user_id, {})
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background 0.3s, color 0.3s;
-        }
+# نمونەی بەکارهێنان
+memory_system = KurdChatMemory()
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
+# تۆمارکردنی بەکارهێنەر
+print(memory_system.register_user("user_001", "نانا"))
 
-        /* بەشی سەرەوە */
-        header {
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border);
-            padding: 15px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+# زیادکردنی گفتوگۆ
+memory_system.add_conversation("user_001", "سڵاو", "سڵاو نانا! چۆنی؟")
 
-        .navbar {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        /* دوگمەی گۆڕینی ڕەنگ */
-        .theme-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        /* سێکشنەکان */
-        .main-container {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .welcome-box {
-            background: linear-gradient(135deg, #1e1b4b, #311042);
-            padding: 40px 20px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 40px;
-            color: white;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-        }
-
-        .welcome-box h1 {
-            font-size: 32px;
-            margin-bottom: 15px;
-        }
-
-        /* لیستکردنی بابەتەکان لەسەر مۆبایل و کۆمپیوتەر */
-        .content-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .post-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .post-meta {
-            font-size: 12px;
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        .post-card h2 {
-            font-size: 20px;
-        }
-
-        .post-card p {
-            color: var(--text-muted);
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .read-more {
-            align-self: flex-start;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-top: 5px;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="navbar">
-            <div class="logo">تێک نێت 🌟</div>
-            <button class="theme-btn" onclick="toggleTheme()">گۆڕینی ڕەنگ</button>
-        </div>
-    </header>
-
-    <div class="main-container">
-        
-        <div class="welcome-box">
-            <h1>بەخێربێن بۆ بلۆگی نوێ</h1>
-            <p>لێرە فێربوونی پڕۆگرامسازی و پاراستنی زانیاری بە شێوازێکی مۆدێرن ببینە.</p>
-        </div>
-
-        <div class="content-grid">
-            
-            <div class="post-card">
-                <span class="post-meta">#پایثۆن #فێربوون</span>
-                <h2>چۆن یەکەم سکریپتی خۆت بە پۆتۆن دەنووسیت؟</h2>
-                <p>پایثۆن زمانێکی زۆر سادەیە. لێرەدا فێردەبین چۆن بە چەند دێڕێکی کەم ئەپڵیکەیشنێکی ناوخۆیی بۆ کۆمپیوتەرەکەت دروست بکەیت.</p>
-                <a href="#" class="read-more">خوێندنەوەی بابەت ←</a>
-            </div>
-
-            <div class="post-card">
-                <span class="post-meta">#سایبەر #پاراستن</span>
-                <h2>گرنگی بەهێزکردنی وشەی تێپەڕ (Password)</h2>
-                <p>پاراستنی ئەکاونتەکانت لە هێرشی هاکەران سەرەکیترین هەنگاوە. هەمیشە هەوڵبدە وشەی تێپەڕی ئاڵۆز بەکاربهێنیت کە پیت و ژمارە و هێمای تێدابێت.</p>
-                <a href="#" class="read-more">خوێندنەوەی بابەت ←</a>
-            </div>
-
-        </div>
-    </div>
-
-    <footer>
-        <p>&copy; 2026 تێک نێت مۆدێرن. هەموو مافەکان پارێزراون.</p>
-    </footer>
-
-    <script>
-        function toggleTheme() {
-            document.body.classList.toggle('light-theme');
-        }
-    </script>
-</body>
-</html>
+# زانیاری بەکارهێنەر
+user_info = memory_system.get_user_info("user_001")
+print(f"بەکارهێنەر: {user_info.get('name')}")
+print(f"ژمارەی گفتوگۆکان: {len(user_info.get('conversation_history', []))}")
