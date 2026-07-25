@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">LumaAi</string>
+    <string name="title_activity_main">LumaAi</string>
+    <string name="package_name">com.lumaai.app</string>
+    <string name="custom_url_scheme">com.lumaai.app</string>
+</resources>

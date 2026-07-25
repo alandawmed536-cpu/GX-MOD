@@ -1,0 +1,6 @@
+{
+  "name": "Kurdish AI Assistant - ئەی ئای هاوڕێ",
+  "description": "An AI chat application optimized for desktop and mobile with chat history persistence, menu navigation, new chat creation, multimodal image support, and search grounding.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
